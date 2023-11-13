@@ -134,7 +134,7 @@ bool BottleStatus() {
   if (Check_CapSensor < 25 && Check_IndSensor > 25) {
     bStatus = true;
   } else {
-    bStatus = true; // false
+    bStatus = false;
   }
   
   Servos(servoEntrance);
