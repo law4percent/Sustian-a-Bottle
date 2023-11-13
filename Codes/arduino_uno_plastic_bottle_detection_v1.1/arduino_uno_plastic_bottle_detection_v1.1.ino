@@ -28,8 +28,6 @@ const byte ShapeLikeBottle = 3;
 const byte NotBottle = 4;
 bool Check_ShapeLikeBottle;
 bool Check_NotBottle;
-//const byte isCamDoneWorking = 3;
-//bool Check_isCamDoneWorking = false;
 
 void setup() {
   Serial.begin(9600);
