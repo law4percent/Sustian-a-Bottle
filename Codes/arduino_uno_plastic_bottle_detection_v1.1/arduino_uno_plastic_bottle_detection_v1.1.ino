@@ -18,16 +18,17 @@ const byte trig = 7;
 const byte echo = A2;
 int duration, cm;
 
-void Servos(byte location);
-void Angle(byte loc, int sec);
-bool BottleStatus();
-bool BottleShapeStatus();
-
 const byte SignalToESPcam = 2;
 const byte ShapeLikeBottle = 3;
 const byte NotBottle = 4;
 bool Check_ShapeLikeBottle;
 bool Check_NotBottle;
+
+void Servos(byte location);
+void Angle(byte loc, int sec);
+bool BottleStatus();
+bool BottleShapeStatus();
+long microsecondsToCentimeters(long microseconds);
 
 void setup() {
   Serial.begin(9600);
@@ -45,14 +46,18 @@ void setup() {
   pinMode(ShapeLikeBottle, INPUT);
   pinMode(NotBottle,       INPUT);
   digitalWrite(SignalToESPcam, 0);
-  Serial.println("Please wait for 3 secs... Preparing...");
-  delay(3000);
+  
+  Serial.println("Setting up...");
+  delay(2000);
+  Serial.println("Please wait for seconds...");
+  delay(2000);
+  Serial.println("The machine is now ready!");
+  Serial.println();
+  delay(1000);
 }
 
 void loop() {
   Check_InsertCoinGoSignal = digitalRead(InsertCoinGoSignal);
-  Serial.print("InsertCoinGoSignal_Status: ");
-  Serial.println(Check_InsertCoinGoSignal);
   
   if (Check_InsertCoinGoSignal) {
     digitalWrite(trig, LOW);
@@ -61,6 +66,10 @@ void loop() {
   	delayMicroseconds(10);
   	digitalWrite(trig, LOW);
   	duration = pulseIn(echo, HIGH);
+    cm = microsecondsToCentimeters(duration);
+    Serial.print("Object_Distance: ");
+    Serial.print(cm);
+    Serial.println(" cm");
     
     if(cm < 150) {
       if (BottleStatus() == false) {
@@ -76,7 +85,11 @@ void loop() {
         }
         digitalWrite(SignalToESPcam, 0);
       }
+    } else {
+      Serial.println("No object found.");
     }
+  } else {
+    Serial.println("Waiting for insert botte signal.");
   }
   Serial.println();
 }
@@ -87,10 +100,10 @@ void Servos(byte location) {
       Angle(3, 0);
       break;
     case servoGoLeft:
-      Angle(2, 1000);
+      Angle(2, 500);
       break;
     case servoGoBottom:
-      Angle(1, 1000);
+      Angle(1, 500);
       break;
     case servoEntrance:
       Angle(0, 0);
@@ -112,6 +125,10 @@ void Angle(byte loc, int sec) {
   }
 }
 
+long microsecondsToCentimeters(long microseconds) {
+   return microseconds / 29 / 2;
+}
+
 /*** Check if it is a Plastic and if it has water ***/
 bool BottleStatus() {
   byte countDown = 3;
@@ -124,15 +141,16 @@ bool BottleStatus() {
     countDown--;
   }
   
-  Serial.print("CapSensor: ");
-  Serial.print(Check_CapSensor);
-  Serial.print("  &&  IndSensor: ");
-  Serial.println(Check_IndSensor);
+  Serial.print("IndSensor: ");
+  Serial.print(Check_IndSensor);
+  Serial.print("  &&  CapSensor: ");
+  Serial.println(Check_CapSensor);
   
   if (Check_CapSensor < 25 && Check_IndSensor > 25) {
     bStatus = true;
   } else {
     bStatus = false;
+    Serial.println("Bottle has water or it's a metal.");
   }
   
   Servos(servoEntrance);
