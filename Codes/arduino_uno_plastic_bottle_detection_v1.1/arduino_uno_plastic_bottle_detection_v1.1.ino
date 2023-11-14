@@ -49,11 +49,11 @@ void setup() {
   
   Serial.println("Setting up...");
   delay(2000);
-  Serial.println("Please wait for seconds...");
+  Serial.println("Please wait for few seconds...");
   delay(2000);
   Serial.println("The machine is now ready!");
   Serial.println();
-  delay(1000);
+  delay(2000);
 }
 
 void loop() {
@@ -76,7 +76,7 @@ void loop() {
         Servos(servoGoBottom);
       } else {
         digitalWrite(SignalToESPcam, 1);
-        delay(3000);
+        delay(4000);
         if (BottleShapeStatus() == false) {
           Servos(servoGoBottom);
         } else {
@@ -86,7 +86,7 @@ void loop() {
         digitalWrite(SignalToESPcam, 0);
       }
     } else {
-      Serial.println("No object found.");
+      Serial.println("No object found by ultrasonic.");
     }
   } else {
     Serial.println("Waiting for insert botte signal.");
@@ -167,6 +167,9 @@ bool BottleShapeStatus() {
   
   if (Check_ShapeLikeBottle && !Check_NotBottle) {
     return true;
+  } else if (!Check_ShapeLikeBottle && !Check_NotBottle) {
+    Serial.println("No object found by camera.");
+    return false;
   } else {
     return false;
   }
