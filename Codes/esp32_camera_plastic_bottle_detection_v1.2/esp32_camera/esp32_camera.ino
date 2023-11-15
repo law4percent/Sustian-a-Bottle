@@ -8,6 +8,7 @@ float AccuracyRate;
 byte countAccur = 0;
 byte check_10times = 10;
 bool ShapeLikeBottle = false;
+
 #define CAMERA_MODEL_AI_THINKER  // Has PSRAM
 //#define CAMERA_MODEL_ESP_EYE // Has PSRAM
 
@@ -102,10 +103,10 @@ bool ei_camera_capture(uint32_t img_width, uint32_t img_height, uint8_t *out_buf
 * @brief      Arduino setup function
 */
 void setup() {
-  pinMode(12, INPUT);
-  pinMode(13, OUTPUT);
-  pinMode(15, OUTPUT);
-  pinMode(14, OUTPUT);
+  pinMode(12, INPUT);  // Signal from Arduino
+  pinMode(13, OUTPUT); // Plastic bottle shape signal
+  pinMode(15, OUTPUT); // Not plastic bottle shape signal
+  pinMode(14, OUTPUT); // Signal to Arduino
   digitalWrite(13, 0);
   digitalWrite(15, 0);
   digitalWrite(14, 0);
@@ -203,10 +204,12 @@ void loop() {
     if (AccuracyRate >= 0.85) {
       countAccur++;
       if (countAccur == 5) {
-        ei_printf("It is like plastic bottle shape\n");
+        Serial.println("It is plastic bottle shape.");
         digitalWrite(13, 1);
         digitalWrite(15, 0);
-        delay(2000);
+        delay(500);
+        digitalWrite(14, 1); // Signal to Arduino that it is done checking the object
+        delay(500);
         ShapeLikeBottle = true;
       }
     }
@@ -217,27 +220,29 @@ void loop() {
     delay(100);
   }
 
-  if (check_10times == 0) {
+  if (check_10times == 0 || countAccur == 5) {
+    Serial.println("Checking has done...");
     if (countAccur != 5 && ShapeLikeBottle == false) {
       // not plastic bottle shape
       digitalWrite(13, 0);
       digitalWrite(15, 1);
-      delay(2000);
+      delay(500);
+      digitalWrite(14, 1); // Signal to Arduino that it is done checking the object
     } else if (countAccur == 5 && ShapeLikeBottle == true) {
       ShapeLikeBottle = false;
     } else {
       // No object found.
       digitalWrite(13, 0);
       digitalWrite(15, 0);
-      delay(2000);
+      delay(500);
+      digitalWrite(14, 1); // Signal to Arduino that it is done checking the object
     }
     check_10times = 10;
     countAccur = 0;
     digitalWrite(13, 0);
     digitalWrite(15, 0);
 
-    digitalWrite(14, 1); // Signal to Arduino that it is done checking the object
-    delay(1000);
+    delay(500);
     digitalWrite(14, 0);
   }
 }
