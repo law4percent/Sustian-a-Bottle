@@ -21,8 +21,10 @@ int duration, cm;
 const byte SignalToESPcam = 2;
 const byte ShapeLikeBottle = 3;
 const byte NotBottle = 4;
+const byte SignalFromESPcam = 5;
 bool Check_ShapeLikeBottle;
 bool Check_NotBottle;
+bool Check_SignalFromESPcam;
 
 void Servos(byte location);
 void Angle(byte loc, int sec);
@@ -45,6 +47,7 @@ void setup() {
   pinMode(SignalToESPcam,  OUTPUT);
   pinMode(ShapeLikeBottle, INPUT);
   pinMode(NotBottle,       INPUT);
+  pinMode(SignalFromESPcam,INPUT);
   digitalWrite(SignalToESPcam, 0);
   
   Serial.println("Setting up...");
@@ -76,7 +79,12 @@ void loop() {
         Servos(servoGoBottom);
       } else {
         digitalWrite(SignalToESPcam, 1);
-        delay(4000);
+        delay(100);
+  
+        do {
+          Check_SignalFromESPcam = digitalRead(SignalFromESPcam);
+          Serial.println("Waiting for esp32 cam signal.");
+        } while (!Check_SignalFromESPcam);
         if (BottleShapeStatus() == false) {
           Servos(servoGoBottom);
         } else {
