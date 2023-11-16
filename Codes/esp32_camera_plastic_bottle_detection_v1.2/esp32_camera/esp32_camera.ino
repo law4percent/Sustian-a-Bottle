@@ -207,17 +207,19 @@ void loop() {
         Serial.println("It is plastic bottle shape.");
         digitalWrite(13, 1);
         digitalWrite(15, 0);
-        delay(500);
         digitalWrite(14, 1); // Signal to Arduino that it is done checking the object
-        delay(500);
         ShapeLikeBottle = true;
       }
     }
+    Serial.print("AccuracyRate: ");
+    Serial.print(AccuracyRate);
+    Serial.print("   and countAccur: ");
+    Serial.println(countAccur);
     check_10times--;
-    delay(100);
+    delay(10);
   } else if (Check_SignalFromArduino && !isThereObject) {
     check_10times--;
-    delay(100);
+    delay(10);
   }
 
   if (check_10times == 0 || countAccur == 5) {
@@ -226,7 +228,6 @@ void loop() {
       // not plastic bottle shape
       digitalWrite(13, 0);
       digitalWrite(15, 1);
-      delay(500);
       digitalWrite(14, 1); // Signal to Arduino that it is done checking the object
     } else if (countAccur == 5 && ShapeLikeBottle == true) {
       ShapeLikeBottle = false;
@@ -234,16 +235,14 @@ void loop() {
       // No object found.
       digitalWrite(13, 0);
       digitalWrite(15, 0);
-      delay(500);
       digitalWrite(14, 1); // Signal to Arduino that it is done checking the object
     }
+    delay(200);
     check_10times = 10;
     countAccur = 0;
+    digitalWrite(14, 0);
     digitalWrite(13, 0);
     digitalWrite(15, 0);
-
-    delay(500);
-    digitalWrite(14, 0);
   }
 }
 
