@@ -85,6 +85,7 @@ void loop() {
           Check_SignalFromESPcam = digitalRead(SignalFromESPcam);
           Serial.println("Waiting for esp32 cam signal.");
         } while (!Check_SignalFromESPcam);
+        
         if (BottleShapeStatus() == false) {
           Servos(servoGoBottom);
         } else {
@@ -94,7 +95,7 @@ void loop() {
         digitalWrite(SignalToESPcam, 0);
       }
     } else {
-      Serial.println("No object found by ultrasonic.");
+      Serial.println("No object detected by ultrasonic.");
     }
   } else {
     Serial.println("Waiting for insert botte signal.");
