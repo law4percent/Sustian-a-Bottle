@@ -34,7 +34,7 @@ void setup() {
         Serial.println(cam.getErrorMessage());
 
     // replace with your SSID and PASSWORD
-    while (!cam.connect("~toperpangz~", "Toper07201987"))
+    while (!cam.connect("WiFi_SSID", "WiFI_Pass"))
         Serial.println(cam.getErrorMessage());
 
     while (!http.begin())
