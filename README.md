@@ -26,3 +26,4 @@
 - 1 - Router
 - 1 - 12v Cooler Fan
 - 1 - SIM900A GSM/GPRS
+- Strandred Wires 22 guage (color white, red, and black)
