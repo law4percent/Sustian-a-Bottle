@@ -1,6 +1,6 @@
 # Software Used
 **IDE**
-  - Arduino IDE 👉 arduino.cc/en/software
+  - Arduino IDE 👉 https://www.arduino.cc/en/software
 
 **Dowloaded Libraries**
   - EloquentEsp32cam (version 1.1.2)
@@ -27,3 +27,4 @@
 - 1 - 12v Cooler Fan
 - 1 - SIM900A GSM/GPRS
 - Strandred Wires 22 guage (color white, red, and black)
+- Jumping Wires (Male-Female)
