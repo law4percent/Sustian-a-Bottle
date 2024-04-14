@@ -32,7 +32,7 @@ const byte ind_A = A0;
 const byte ind_B = A1;
 const byte cap_A = A2;
 const byte cap_B = A3;
-const byte LEDindicatorNotReady = 10;
+const byte LEDindicatorNotReady = 13;
 
 void setup() {
   Serial.begin(9600);
@@ -52,16 +52,16 @@ void setup() {
   pinMode(cap_B, INPUT);
   pinMode(OrangePi_signal, INPUT_PULLUP);
   pinMode(ReceivedSignalFromESP, INPUT_PULLUP);
-  pinMode(13, OUTPUT);
+  pinMode(LEDindicatorNotReady, OUTPUT);
 
   digitalWrite(InternetTime, 1);
   digitalWrite(LEDindcatorINPUT, 1);
-  digitalWrite(13, 1);
+  digitalWrite(LEDindicatorNotReady, 1);
   delay(3000);
 
   while (true) {
     if (digitalRead(ReceivedSignalFromESP) == 1) {
-      digitalWrite(13, 0);
+      digitalWrite(LEDindicatorNotReady, 0);
       break;
     } else Serial.println("Camera is not yet ready!");
     delay(25);
