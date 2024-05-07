@@ -50,8 +50,8 @@ void setup() {
   pinMode(ind_B, INPUT);
   pinMode(cap_A, INPUT);
   pinMode(cap_B, INPUT);
-  pinMode(OrangePi_signal, INPUT_PULLUP);
-  pinMode(ReceivedSignalFromESP, INPUT_PULLUP);
+  pinMode(OrangePi_signal, INPUT);
+  pinMode(ReceivedSignalFromESP, INPUT);
   pinMode(LEDindicatorNotReady, OUTPUT);
 
   digitalWrite(InternetTime, 1);
@@ -63,7 +63,9 @@ void setup() {
     if (digitalRead(ReceivedSignalFromESP) == 1) {
       digitalWrite(LEDindicatorNotReady, 0);
       break;
-    } else Serial.println("Camera is not yet ready!");
+    } else {
+      Serial.println(F("Camera is not yet ready!"));
+    }
     delay(25);
   }
   digitalWrite(LEDindcatorINPUT, 0);
@@ -75,7 +77,7 @@ void loop() {
   delay(150);
 
 
-  if (!OrangePi_state and goSignal) {
+  if (OrangePi_state and goSignal) {
     delay(2000);
     bool EvBot = EvaluateBottle();
 
@@ -88,13 +90,10 @@ void loop() {
       int countTrue = 0;
       for (int limit = 20; limit > 0; limit--) {
         delay(500);
-
         if (digitalRead(ReceivedSignalFromESP)) {
           countTrue++;
-        }
-
-        if (countTrue >= 5) {
-          break;
+          if (countTrue >= 5) 
+            break;
         }
       }
 
@@ -110,7 +109,7 @@ void loop() {
         delay(1000);
       }
     } else {
-      Warning();
+      WarningSignal();
     }
 
     servo_B.write(50);
@@ -118,7 +117,7 @@ void loop() {
   }
 }
 
-void Warning() {
+void WarningSignal() {
   digitalWrite(LEDindcatorINPUT, 1);
   delay(500);
   digitalWrite(LEDindcatorINPUT, 0);
@@ -140,7 +139,7 @@ bool isThereBottle() {
   duration = pulseIn(echoPin, HIGH);
   cm = duration / 29 / 2;
 
-  return (cm <= 8) ? true : false;
+  return (cm <= 8);
 }
 
 bool EvaluateBottle() {
@@ -158,10 +157,6 @@ bool EvaluateBottle() {
     delay(1000);
     countDown--;
   }
-
-  if (capA_val < 950 or capB_val > 50 or indA_val < 50 or indB_val < 50) {
-    return false;  // false means the bottle is not allow to proceed
-  } else {
-    return true;
-  }
+  
+  return (capA_val > 950) or (capB_val < 50) or (indA_val > 50) or (indB_val > 50);
 }
