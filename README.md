@@ -28,3 +28,6 @@
 - 1 - SIM900A GSM/GPRS
 - Strandred Wires 22 guage (color white, red, and black)
 - Jumper Wires (Male-Female)
+
+# Outcome Product
+![Screenshot 2024-07-13 014421](https://github.com/user-attachments/assets/b6fa5ffc-2fd0-4050-bfb2-f6f15165c3f1)
