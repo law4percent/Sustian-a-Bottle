@@ -1,4 +1,8 @@
-# Software Used
+## Overview
+Reverse Vending Machine. This project is like the Peso Wi-Fi vending machine but accepts recyclable plastic bottles instead of coins. After depositing a bottle, users get connected to the internet, promoting recycling and reducing plastic waste.
+
+
+## Software Used
 **IDE**
   - Arduino IDE 👉 https://www.arduino.cc/en/software
 
@@ -9,7 +13,7 @@
 **Circuit Diagram**
   - Cirkit 👉 https://www.cirkitstudio.com/download.html
     
-# Hardware Requirements
+## Hardware Requirements
 - 2 - Arduino Uno R3
 - 1 - ESP32cam
 - 2 - Two Channel Relay
@@ -29,5 +33,5 @@
 - Strandred Wires 22 guage (color white, red, and black)
 - Jumper Wires (Male-Female)
 
-# Outcome Product
+## Outcome Product
 ![Screenshot 2024-07-13 014421](https://github.com/user-attachments/assets/b6fa5ffc-2fd0-4050-bfb2-f6f15165c3f1)
